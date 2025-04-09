@@ -16,12 +16,20 @@ export class LoginPage extends BasePage {
     this.submitButton = page.getByRole('button', { name: 'Увійти' });
   }
 
+  /**
+   * Perform login with provided credentials
+   */
   async login(email: string, password: string): Promise<void> {
-    await this.emailInput.fill(email);
-    await this.passwordInput.fill(password);
-    await this.submitButton.click({ force: true }); // Force click due to potential interception
-    // Add waits if necessary, e.g., wait for navigation or disappearance of the form
-    // await this.page.waitForNavigation(); // Or wait for a specific element indicating successful login
+    try {
+      await this.emailInput.fill(email);
+      await this.passwordInput.fill(password);
+      await this.submitButton.click({ force: true });
+      // Optionally, wait for navigation or success indicator here
+    } catch (error) {
+      console.error('Failed to perform login:', error);
+      await this.page.screenshot({ path: 'error-login.png' });
+      throw error;
+    }
   }
 
   // Optional: Add methods to check for login errors

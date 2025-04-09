@@ -12,16 +12,33 @@ export class HomePage extends BasePage {
     this.loginIcon = page.getByRole('link', { name: 'Вхід' }); // Refined selector to be unique
   }
 
+  /**
+   * Navigate to the Hotline home page and wait for it to load
+   */
   async goto(): Promise<void> {
-    await super.goto('https://hotline.ua/');
-    await this.waitForPageLoad(); // Wait for the page to be ready
+    try {
+      await super.goto('https://hotline.ua/');
+      await this.waitForPageLoad();
+    } catch (error) {
+      console.error('Failed to open Hotline home page:', error);
+      await this.page.screenshot({ path: 'error-homepage-goto.png' });
+      throw error;
+    }
   }
 
+  /**
+   * Click the login icon to open the login modal
+   * @returns {LoginPage} instance representing the login modal
+   */
   async openLoginModal(): Promise<LoginPage> {
-    await this.loginIcon.click();
-    // Assuming clicking the icon opens a modal/form handled by LoginPage
-    // Wait for a specific element of the login modal to be visible if necessary
-    // e.g., await this.page.locator('#login-form-selector').waitFor({ state: 'visible' });
-    return new LoginPage(this.page);
+    try {
+      await this.loginIcon.click();
+      // Optionally, wait for login modal to appear here
+      return new LoginPage(this.page);
+    } catch (error) {
+      console.error('Failed to open login modal:', error);
+      await this.page.screenshot({ path: 'error-openLoginModal.png' });
+      throw error;
+    }
   }
 }

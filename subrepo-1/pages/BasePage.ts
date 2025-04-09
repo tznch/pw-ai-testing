@@ -7,12 +7,29 @@ export class BasePage {
     this.page = page;
   }
 
+  /**
+   * Navigate to a specific URL
+   */
   async goto(url: string): Promise<void> {
-    await this.page.goto(url);
+    try {
+      await this.page.goto(url);
+    } catch (error) {
+      console.error(`Failed to navigate to ${url}:`, error);
+      await this.page.screenshot({ path: 'error-goto.png' });
+      throw error;
+    }
   }
 
+  /**
+   * Wait until the page has fully loaded (network idle)
+   */
   async waitForPageLoad(): Promise<void> {
-    // Example: Wait for network idle, adjust as needed for the specific site
-    await this.page.waitForLoadState('networkidle');
+    try {
+      await this.page.waitForLoadState('networkidle');
+    } catch (error) {
+      console.error('Failed while waiting for page load:', error);
+      await this.page.screenshot({ path: 'error-waitForPageLoad.png' });
+      throw error;
+    }
   }
 }
