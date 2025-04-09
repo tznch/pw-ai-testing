@@ -54,7 +54,7 @@ test.describe('Google Translate basic functionality', () => {
   /*
   test('should open Images tab', async ({ page }) => {
     await page.goto('https://translate.google.com');
-
+  
     try {
       const imagesTab = page.getByText(/images/i);
       await expect(imagesTab).toBeVisible({ timeout: 5000 });
@@ -64,7 +64,7 @@ test.describe('Google Translate basic functionality', () => {
       await page.screenshot({ path: 'error-images-tab.png' });
       throw error;
     }
-
+  
     // Verify Images tab content loaded
     await expect(page.locator('text=Drag an image here')).toBeVisible();
   });
@@ -74,7 +74,7 @@ test.describe('Google Translate basic functionality', () => {
   /*
   test('should open Documents tab', async ({ page }) => {
     await page.goto('https://translate.google.com');
-
+  
     try {
       const documentsTab = page.getByText(/documents/i);
       await expect(documentsTab).toBeVisible({ timeout: 5000 });
@@ -84,7 +84,7 @@ test.describe('Google Translate basic functionality', () => {
       await page.screenshot({ path: 'error-documents-tab.png' });
       throw error;
     }
-
+  
     // Verify Documents tab content loaded
     await expect(page.getByText(/browse your computer/i)).toBeVisible();
   });
@@ -94,7 +94,7 @@ test.describe('Google Translate basic functionality', () => {
   /*
   test('should open Websites tab', async ({ page }) => {
     await page.goto('https://translate.google.com');
-
+  
     try {
       const websitesTab = page.getByText(/websites/i);
       await expect(websitesTab).toBeVisible({ timeout: 5000 });
@@ -104,9 +104,43 @@ test.describe('Google Translate basic functionality', () => {
       await page.screenshot({ path: 'error-websites-tab.png' });
       throw error;
     }
-
+  
     // Verify Websites tab content loaded
     await expect(page.getByPlaceholder(/enter a website url/i)).toBeVisible();
+    await expect(page.getByText(/drag and drop/i)).toBeVisible();
   });
   */
+
+  test('should load Image translation UI', async ({ page }) => {
+    await page.goto('https://translate.google.com/?sl=auto&tl=en&op=images');
+
+    await expect(page.getByRole('heading', { name: /image translation/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /browse your files/i })).toBeVisible();
+    // Skip "Paste from clipboard" button as it may be missing or hidden
+    await expect(page.getByText('Supported file types: .jpg, .jpeg, .png, .webp.')).toBeVisible();
+  });
+
+  test('should load Document translation UI', async ({ page }) => {
+    await page.goto('https://translate.google.com/?sl=auto&tl=en&op=docs');
+
+    await expect(page.getByRole('heading', { name: /document translation/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /browse your files/i })).toBeVisible();
+    await expect(page.getByText('Supported file types: .docx, .pdf, .pptx, .xlsx.')).toBeVisible();
+    await expect(page.getByRole('heading', { name: /drag and drop/i })).toBeVisible();
+  });
+
+  test('should load Website translation UI', async ({ page }) => {
+    await page.goto('https://translate.google.com/?sl=auto&tl=en&op=websites');
+
+    await expect(page.getByRole('heading', { name: /website translation/i })).toBeVisible();
+    await expect(page.getByRole('textbox', { name: /website/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /translate website/i })).toBeVisible();
+  });
+
+  test('should load Text translation UI', async ({ page }) => {
+    await page.goto('https://translate.google.com/?sl=auto&tl=en&op=translate');
+
+    await expect(page.getByRole('heading', { name: /text translation/i })).toBeVisible();
+    await expect(page.getByRole('combobox', { name: /source text/i })).toBeVisible();
+  });
 });

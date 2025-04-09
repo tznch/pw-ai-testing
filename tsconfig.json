@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "CommonJS",
-    "moduleResolution": "Node",
+    "module": "commonjs",
+    "moduleResolution": "node",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -10,9 +10,9 @@
     "baseUrl": "."
   },
   "include": [
-    "pages/**/*",
-    "subrepo-1/pages/**/*",
-    "tests/**/*",
-    "subrepo-1/tests/**/*"
+    "google-translate/pages/**/*.ts",
+    "google-translate/tests/**/*.ts",
+    "hotline.ua/pages/**/*.ts",
+    "hotline.ua/tests/**/*.ts"
   ]
 }
