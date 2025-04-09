@@ -1,11 +1,5 @@
 {
   "mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": [
-        "@playwright/mcp@latest"
-      ]
-    },
     "github": {
       "command": "docker",
       "args": [
@@ -18,9 +12,9 @@
       ],
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "REDACTED"
-      }
+      },
+      "disabled": false,
+      "alwaysAllow": []
     }
   }
 }
-
-
